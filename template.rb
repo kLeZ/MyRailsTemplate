@@ -82,6 +82,10 @@ def run_initializers
 	# ==========================================================================
 	generate 'cancan:ability'
 
+	# Initialize Rolify
+	# ==========================================================================
+	generate 'rolify Role User'
+
 	generate 'simple_form:install --bootstrap'
 end
 
@@ -94,19 +98,52 @@ def configure_database
 	gsub_file "config/database.yml", /database: myapp_production/,  "database: #{app_name}"
 end
 
+def configure_models
+	# Adds a username field to the user model
+	# in order to let the user enter a username and
+	# be able to login either with a username or an email
+	generate(:migration, 'AddUsernameToUsers', 'username:string')
+
+	insert_into_file 'app/models/user.rb', :after => ':recoverable, :rememberable, :trackable, :validatable' do
+		attr_accessor :login
+
+		def self.find_first_by_auth_conditions(warden_conditions)
+			conditions = warden_conditions.dup
+			if login = conditions.delete(:login)
+				where(conditions).where(["username = :value OR lower(email) = lower(:value)", { :value => login }]).first
+			else
+				where(conditions).first
+			end
+		end
+	end
+
+	insert_into_file 'app/config/initializers/devise.rb', :after => '# config.authentication_keys = [ :email ]' do
+		config.authentication_keys = [ :login ]
+	end
+
+	insert_into_file 'app/config/initializers/devise.rb', :after => '# config.reset_password_keys = [ :email ]' do
+		config.reset_password_keys = [:login]
+	end
+
+	insert_into_file 'config/locales/en.yml' do
+		en:
+			activerecord:
+				attributes:
+					user:
+						login: "Username or email"
+	end
+end
+
 def load_assets
 	# Copy Assets
 	# ==========================================================================
 	remove_file 'app/assets/javascripts/application.js'
-
 	remove_file 'app/assets/stylesheets/application.css'
-
+	remove_file 'app/controllers/application_controller.rb'
 	remove_file 'app/views/about/index.html.erb'
 	remove_file 'app/views/contact/index.html.erb'
 	remove_file 'app/views/home/index.html.erb'
-
 	remove_file 'app/views/layouts/application.html.erb'
-
 	remove_file 'config/initializers/assets.rb'
 
 	inside 'app' do
@@ -192,6 +229,9 @@ def load_assets
 				copy_file 'favicon.ico'
 			end
 		end
+		inside 'controllers' do
+			copy_file 'application_controller.rb'
+		end
 		inside 'views' do
 			inside 'about' do
 				copy_file 'index.html.erb'
@@ -271,6 +311,7 @@ end
 end
 
 generate_controllers
+
 load_gems
 load_assets
 
@@ -278,11 +319,17 @@ run 'bundle install'
 
 configure_environment
 configure_database
+
 add_routes
+
 run_initializers
 
 rake 'db:drop'
 rake 'db:create'
+
+configure_models
+
 rake 'db:migrate'
+
 rake 'assets:clean'
 rake 'assets:precompile'
