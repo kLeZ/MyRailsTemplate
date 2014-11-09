@@ -1,0 +1,27 @@
+<div class="container">
+<% if flash[:error] %>
+	<div id="error-box" class="alert alert-danger" style="width: 60%; margin: 0 auto; margin-bottom: 10px;">
+		<a class="close" data-dismiss="alert" href="#error-box">&times;</a>
+		<strong><%= flash[:error] %></strong>
+	</div>
+<% end %>
+<div class="container">
+<% if flash[:alert] %>
+	<div id="warn-box" class="alert alert-warning" style="width: 60%; margin: 0 auto; margin-bottom: 10px;">
+		<a class="close" data-dismiss="alert" href="#error-box">&times;</a>
+		<strong><%= flash[:alert] %></strong>
+	</div>
+<% end %>
+<% if flash[:notice] %>
+	<div id="success-box" class="alert alert-success" style="width: 60%; margin: 0 auto; margin-bottom: 10px;">
+		<a class="close" data-dismiss="alert" href="#info-box">&times;</a>
+		<strong><%= flash[:notice] %></strong>
+	</div>
+<% end %>
+<% if flash[:info] %>
+	<div id="info-box" class="alert alert-info" style="width: 60%; margin: 0 auto; margin-bottom: 10px;">
+		<a class="close" data-dismiss="alert" href="#info-box">&times;</a>
+		<strong><%= flash[:notice] %></strong>
+	</div>
+<% end %>
+</div>

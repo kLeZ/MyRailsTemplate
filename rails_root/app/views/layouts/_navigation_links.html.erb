@@ -1,0 +1,20 @@
+<ul class="nav navbar-nav">
+					<li class="<%= 'active' if params[:controller] == 'home' %>">
+						<a href="/index"><%= icon 'home' %> Home</a>
+					</li>
+					<li class="<%= 'active' if params[:controller] == 'about' %>">
+						<a href="/about">
+							<span class="glyphicon glyphicon-info-sign"></span> About
+						</a>
+					</li>
+					<li class="<%= 'active' if params[:controller] == 'contact' %>">
+						<a href="/contact"><%= icon 'support' %> Contact</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right" style="margin-right: 15px;">
+					<%= render 'layouts/user_header' %>
+					<% if user_signed_in? %>
+						<%= render 'layouts/profile_menu' %>
+					<% end %>
+				</ul>
+
