@@ -1,47 +1,46 @@
 <% if user_signed_in? %>
 <li>
-	<p class="navbar-text">Welcome back, <%=current_user.username %>!</p>
-</li>
-<li>
-	<div class="btn-group btn-block">
-		<span class="nav" style="color: white; vertical-align: middle; height: 100%;">
+						<p class="navbar-text">Welcome back, <%=current_user.username %>!</p>
+					</li>
+					<li>
+						<div class="btn-group btn-block">
+							<span class="nav" style="color: white; vertical-align: middle; height: 100%;">
 
-			<%= link_to destroy_user_session_path, :method => :delete, :style => ' margin: 8px 0 0 5px;', :class => 'btn btn-danger' do %>
-				<%= icon 'sign-out' %> Sign out
-			<% end %>
-		</span>
-	</div>
-</li>
+								<%= link_to destroy_user_session_path, :method => :delete, :style => ' margin: 8px 0 0 5px;', :class => 'btn btn-danger' do %>
+									<%= icon 'sign-out' %> Sign out
+								<% end %>
+							</span>
+						</div>
+					</li>
 <% else %>
 <li>
-	<div class="btn-group btn-block">
-		<span class="nav" style="color: white; vertical-align: middle; height: 100%;">
-		<a class="btn btn-primary" style="margin-top: 8px;" href="/users/sign_up">Sign up</a>
-		</span>
-	</div>
-</li>
-<li class="dropdown">
-	<a id="signin_menu" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b>
-	</a>
-	<ul class="dropdown-menu" style="padding: 5px; width: 250px;" role="menu" aria-labelledby="signin_menu">
-		<li>
-		<%= form_for(:user, :url => session_path(:user), :class => 'navbar-form') do |f| %>
-			<div class="form-group" style="margin: 3px;">
-				<span class="nav">Welcome, new user!</span>
-			</div>
-			<div class="form-group" style="margin: 3px;">
-				<%= f.text_field :login, :placeholder => 'Login', :class=> 'form-control' %>
-			</div>
-			<div class="form-group" style="margin: 3px;">
-				<%= f.password_field :password, autocomplete: "off", :placeholder => 'Password', :class=> 'form-control' %>
-			</div>
-			<div class="form-group" style="margin: 3px;">
-				<%= f.check_box :remember_me %> <%= f.label :remember_me %>
-			</div>
-			<%= link_to "Forgot your password?", new_password_path(:user) %>
-			<%= f.submit "Sign in", :class => 'btn btn-success' %>
-		<% end %>
-		</li>
-	</ul>
-</li>
+						<div class="btn-group btn-block">
+							<span class="nav" style="color: white; vertical-align: middle; height: 100%;">
+							<a class="btn btn-primary" style="margin-top: 8px;" href="/users/sign_up">Sign up</a>
+							</span>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a href="#" id="signin_menu" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
+						<ul class="dropdown-menu" style="padding: 5px; width: 250px;" role="menu" aria-labelledby="signin_menu">
+							<li>
+							<%= form_for(:user, :url => session_path(:user), :class => 'navbar-form') do |f| %>
+								<div class="form-group" style="margin: 3px;">
+									<span class="nav">Welcome, new user!</span>
+								</div>
+								<div class="form-group" style="margin: 3px;">
+									<%= f.text_field :login, :placeholder => 'Login', :class=> 'form-control' %>
+								</div>
+								<div class="form-group" style="margin: 3px;">
+									<%= f.password_field :password, autocomplete: "off", :placeholder => 'Password', :class=> 'form-control' %>
+								</div>
+								<div class="form-group" style="margin: 3px;">
+									<%= f.check_box :remember_me %> <%= f.label :remember_me %>
+								</div>
+								<%= link_to "Forgot your password?", new_password_path(:user) %>
+								<%= f.submit "Sign in", :class => 'btn btn-success' %>
+							<% end %>
+							</li>
+						</ul>
+					</li>
 <% end %>
