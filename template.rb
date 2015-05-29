@@ -9,7 +9,7 @@ end
 
 
 def load_gems
-	gsub_file "Gemfile", /^gem\s+["']sqlite3["'].*$/,''
+	gsub_file "Gemfile", /^gem\s+["']sqlite3["'].*$/, ''
 
 	# Mandatory Gems
 	# ==========================================================================
@@ -105,7 +105,7 @@ def configure_models
 	generate(:migration, 'AddUsernameToUsers', 'username:string')
 
 	insert_into_file 'app/models/user.rb', :after => ':recoverable, :rememberable, :trackable, :validatable' do
-		attr_accessor :login
+		'attr_accessor :login
 
 		def self.find_first_by_auth_conditions(warden_conditions)
 			conditions = warden_conditions.dup
@@ -114,23 +114,23 @@ def configure_models
 			else
 				where(conditions).first
 			end
-		end
+		end'
 	end
 
 	insert_into_file 'app/config/initializers/devise.rb', :after => '# config.authentication_keys = [ :email ]' do
-		config.authentication_keys = [ :login ]
+		'config.authentication_keys = [ :login ]'
 	end
 
 	insert_into_file 'app/config/initializers/devise.rb', :after => '# config.reset_password_keys = [ :email ]' do
-		config.reset_password_keys = [:login]
+		'config.reset_password_keys = [:login]'
 	end
 
 	insert_into_file 'config/locales/en.yml' do
-		en:
-			activerecord:
-				attributes:
-					user:
-						login: "Username or email"
+"en:
+  activerecord:
+    attributes:
+      user:
+        login: \"Username or email\""
 	end
 end
 
